@@ -10,15 +10,31 @@ static Node_ptr_t head = NULL;
  * @author YOUR NAME
  */
 void PQ_insert(int priority, char * data) {
- //FIX THIS
+    Node_ptr_t new_node, tmp;
+    new_node=(Node_ptr_t)malloc(sizeof(Node_t));
+    new_node->data = data;
+    new_node->priority = priority;
+    if (head == NULL){
+        new_node->next = NULL;
+        head=new_node;
+    }else if (head->priority < new_node->priority){
+        new_node->next = head;
+        head=new_node;
+    }else{
+        for (tmp=head;tmp->next->next != NULL && new_node->priority < tmp->next->priority; tmp=tmp->next){
+        }
+        new_node->next = tmp->next;
+        tmp->next = new_node;
+    }
 }
 /**
  * Delete and return the node with the highest priority.
  * @return The highest priority Node.
  */
 Node_ptr_t PQ_delete() {
-  //FIX THIS
-    return NULL;
+    Node_ptr_t return_node = head;
+    head=head->next;
+    return return_node;
 }
 
 /**
@@ -36,8 +52,11 @@ Node_ptr_t PQ_get_head() {
 int PQ_get_size() {
     int size = 0;
     Node_ptr_t tmp;
-    for(tmp = head; tmp != NULL; tmp = tmp->next, size++)
-        ;
+//    if(head != NULL){
+//        fprintf(stderr, "head priority is: %d\n",head->priority);
+//    }
+    for(tmp = head; tmp != NULL; tmp = tmp->next, size++){
+    }
     return size;
 }
 
