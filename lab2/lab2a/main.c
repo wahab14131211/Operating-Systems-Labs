@@ -11,15 +11,25 @@ int main(int argc, char* argv[]) {
     char * person = "UNKNOWN";
     //Add code to change the exit_code depending on argc
     
+    if(argc==1){
+        exit_code = EXIT_FAILURE;
+    }else if(argc>2){
+        exit_code = 2;
+    }
     
     //Add code to change 'person' if one is given on command line
-    
+    if (argc>1){
+        person=argv[1];
+    }
     int len = strlen(argv[0]);
     char * last3 = argv[0] + len - 3; //last3 points to last 3 chars
     fprintf(stderr, "%s\n", argv[0]);
     fprintf(stderr, "%s\n", last3);
     
     //Add code to change 'greeting' if last 3 chars of command are 'bye'
+    if (strcmp(last3,"bye")==0){
+        greeting = "Bye";
+    }
   
     printf("%s %s\n", greeting, person);
     
