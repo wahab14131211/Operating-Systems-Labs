@@ -16,16 +16,19 @@ int main(int argc, char * argv[]) {
     if (argc >= 3) {
         slow_down = atoi(argv[2]);
     }
-
+    
     for (i = 0; i < N_REPS; i++) {
         char * cp = argv[1];
-
+        while(system("mkdir .mutex 2>/dev/null")!=0);
         while (*cp) {
             printf("%c", *cp++);
             fflush(stdout);
             usleep(random() % slow_down);
         }
+        system("rmdir .mutex 2>/dev/null");
         usleep(5000);
     }
+
+
     return EXIT_SUCCESS;
 }
