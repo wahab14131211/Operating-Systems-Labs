@@ -9,8 +9,8 @@
  * Author: wahab
  *
  * Created on March 11, 2021, 9:29 AM
- */
 
+ */
 // if not already compiled run: (wont build in netbeans)
 // gcc -pthread -o main main.c
 // else if the main executable is already in folder you can just run it
@@ -31,10 +31,10 @@ long sum; /* Sum of generated values*/
 long finished_producers; /* number of the producer that finished producing */
 
 //C: Mutex declaration and initialization
-
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 //F: Condition variable declaration and initialization
-
+pthread_cond_t condition_cond = PTHREAD_COND_INITIALIZER;
 
 int main(void) {
     int i;
@@ -44,16 +44,21 @@ int main(void) {
     finished_producers=0;
     
     //A: Creates five generator thread
-    
-    
+    int thread_return[PRODUCER_NO],print_thread_return;
+    pthread_t Threads[PRODUCER_NO],Print_Thread;
+    for(int i=0; i<PRODUCER_NO;i++){
+        thread_return[i]=pthread_create(&Threads[i],NULL,generator_function,NULL);
+    }
     //D: Creates print thread
-    
+    print_thread_return = pthread_create(&Print_Thread,NULL,print_function,NULL);
     
     //B: Makes sure that all generator threads has finished before proceeding
-    
+    for(int i=0; i<PRODUCER_NO;i++){
+        pthread_join(Threads[i],NULL);
+    }
     
     //E: Makes sure that print thread has finished before proceeding
-       
+    pthread_join(Print_Thread,NULL);
     return (0);
 
 }
@@ -84,17 +89,20 @@ void * generator_function(void* junk) {
     pthread_mutex_unlock(&mutex1); // unlock
     
     //H: If all generator has finished fire signal for condition variable
-    
-    
+    if(finished_producers==PRODUCER_NO){
+        pthread_cond_signal(&condition_cond);
+    }
     return (0);
 }
 
 void *print_function(void* junk) {
     //G: Wait until all generator has finished
-    
-    
+    pthread_mutex_lock(&mutex1);
+    while(finished_producers != PRODUCER_NO){
+        pthread_cond_wait(&condition_cond,&mutex1);
+    }
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("The value of counter at the end is: %ld \n", sum);
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    pthread_mutex_unlock(&mutex1);
 }
-

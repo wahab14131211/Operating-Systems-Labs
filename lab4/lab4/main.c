@@ -44,13 +44,13 @@ int main(int argc, char** argv) {
 
     if(fork()==0){
         //child process
-        dup2(pd[0],0);
+        dup2(pd[0],0); //0 is stdin
         close(pd[1]);
         system(child_command);
         exit(0);
     }else{
         //parent process
-        dup2(pd[1],1);
+        dup2(pd[1],1); //1 is stdout
         close(pd[0]);
         system(parent_command);
     }
