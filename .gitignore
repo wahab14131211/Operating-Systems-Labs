@@ -1,6 +1,7 @@
 *.*
 !*.c
 !*.h
+!*.java
 !.gitignore
 Testing
 /lab7/lab7/nbproject/private/
