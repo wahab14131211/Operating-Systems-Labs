@@ -3,3 +3,11 @@
 !*.h
 !.gitignore
 Testing
+/lab7/lab7/nbproject/private/
+/lab7/lab7/build/
+/lab7/lab7/dist/
+/lab8/lab8/nbproject/private/
+/lab8/lab8/build/
+/lab8/lab8/dist/
+/lab9/lab9/nbproject/private/
+/lab9/lab9/build/

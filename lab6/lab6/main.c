@@ -46,11 +46,12 @@ int main(void) {
     //A: Creates five generator thread
     int thread_return[PRODUCER_NO],print_thread_return;
     pthread_t Threads[PRODUCER_NO],Print_Thread;
+    print_thread_return = pthread_create(&Print_Thread,NULL,print_function,NULL);
     for(int i=0; i<PRODUCER_NO;i++){
         thread_return[i]=pthread_create(&Threads[i],NULL,generator_function,NULL);
     }
     //D: Creates print thread
-    print_thread_return = pthread_create(&Print_Thread,NULL,print_function,NULL);
+
     
     //B: Makes sure that all generator threads has finished before proceeding
     for(int i=0; i<PRODUCER_NO;i++){
